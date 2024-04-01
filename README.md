@@ -8,6 +8,10 @@
 [![R-CMD-check](https://github.com/stochaGBEM/stochasim/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stochaGBEM/stochasim/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/stochaGBEM/stochasim/branch/main/graph/badge.svg)](https://app.codecov.io/gh/stochaGBEM/stochasim?branch=main)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/stochasim)](https://CRAN.R-project.org/package=stochasim)
 <!-- badges: end -->
 
 The goal of stochasim is to …
