@@ -11,8 +11,8 @@
 #' width and `width0`.
 #' @export
 revegetate <- function(cross_section, width0, rate = 0.1) {
-  w <- ch_width(cross_section)
-  reveg <- rate * (w - Q_base)
-  ch_width(width) <- w - reveg
+  w <- gbem::ch_width(cross_section)
+  reveg <- rate * (w - width0)
+  gbem::ch_width(cross_section) <- w - reveg
   cross_section
 }
