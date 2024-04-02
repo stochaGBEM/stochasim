@@ -55,21 +55,51 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>The goal of stochasim is to …</p>
+<p>Stochasim tracks river channel width over time as floods widen the channel and non-flood years narrow the channel through revegetation. It iterates the <code><a href="https://stochagbem.github.io/gbem/reference/gbem.html" class="external-link">gbem::gbem()</a></code> algorithm to calculate erosion, and includes a revegetation layer when erosion does not happen.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of stochasim like so:</p>
+<p>As stochasim is not on CRAN yet, you can install the development version of stochasim like so:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"stochaGBEM/stochasim"</span><span class="op">)</span></span></code></pre></div>
+<p>If this doesn’t work, you may have to install the remotes package with the command <code>install.packages("remotes")</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>This is a basic example which shows you how to solve a common problem:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stochagbem.github.io/stochasim/">stochasim</a></span><span class="op">)</span></span>
-<span><span class="co">## basic example code</span></span></code></pre></div>
+<span><span class="co">#&gt; Loading required package: gbem</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://distionary.netlify.app/" class="external-link">distionary</a></span><span class="op">)</span></span></code></pre></div>
+<p>Loading stochasim also loads the gbem package, so we can start off by making a channel cross section.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">cs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stochagbem.github.io/gbem/reference/cross_section.html" class="external-link">cross_section</a></span><span class="op">(</span><span class="fl">10</span>, grad <span class="op">=</span> <span class="fl">0.01</span>, d50 <span class="op">=</span> <span class="fl">65</span>, d84 <span class="op">=</span> <span class="fl">100</span>, roughness <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Channel with width 10</span></span></code></pre></div>
+<p>Find the flow for which erosion begins (also a gbem feature).</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">q</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stochagbem.github.io/gbem/reference/eroding_flow.html" class="external-link">eroding_flow</a></span><span class="op">(</span><span class="va">cs</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 15.7588</span></span></code></pre></div>
+<p>Set up a peak flow distribution that sometimes exceeds this erosive flow. Here’s how often an event exceeds this critical flow (as a proportion):</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d_peak</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://distionary.netlify.app/reference/dst_gev.html" class="external-link">dst_gev</a></span><span class="op">(</span><span class="fl">11</span>, <span class="fl">3</span>, <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://distionary.netlify.app/reference/survival.html" class="external-link">eval_survival</a></span><span class="op">(</span><span class="va">d_peak</span>, at <span class="op">=</span> <span class="va">q</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.2049773</span></span></code></pre></div>
+<p>An experimental feature of stochasim is the incorporation of hydrograph distributions: a probability distribution whose outcome space is made up of event hydrographs. Make a rainfall-related hydrograph distribution whose baseflow is fixed, and peak is random with the above GEV; plot one example draw from this distribution.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">h</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/hydist_snowrain.html">hydist_rain</a></span><span class="op">(</span><span class="va">d_peak</span>, baseflow <span class="op">=</span> <span class="va">q</span> <span class="op">/</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">23</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
+<p>Run the stochasim algorithm. Plot the evolution of width from year 500 onwards.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ss</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/stochasim.html">stochasim</a></span><span class="op">(</span><span class="va">h</span>, <span class="va">cs</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ss</span>, from <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
+<p>Plot the peak discharges from year 500 onwards.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ss</span>, from <span class="op">=</span> <span class="fl">500</span>, what <span class="op">=</span> <span class="st">"flows"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">

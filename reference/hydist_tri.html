@@ -72,9 +72,9 @@ values between 0 and 1.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">h</span> <span class="op">&lt;-</span> <span class="fu">hydist_tri</span><span class="op">(</span></span></span>
-<span class="r-in"><span>   dst_peak <span class="op">=</span> <span class="fu">dst_gev</span><span class="op">(</span><span class="fl">100</span>, <span class="fl">3</span>, <span class="fl">0.1</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>   dst_baseflow <span class="op">=</span> <span class="fu">dst_norm</span><span class="op">(</span><span class="fl">50</span>, <span class="fl">10</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>   dst_when <span class="op">=</span> <span class="fu">dst_beta</span><span class="op">(</span><span class="fl">20</span>, <span class="fl">50</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   dst_peak <span class="op">=</span> <span class="fu"><a href="https://distionary.netlify.app/reference/dst_gev.html" class="external-link">dst_gev</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">3</span>, <span class="fl">0.1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   dst_baseflow <span class="op">=</span> <span class="fu"><a href="https://distionary.netlify.app/reference/dst_norm.html" class="external-link">dst_norm</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">10</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   dst_when <span class="op">=</span> <span class="fu"><a href="https://distionary.netlify.app/reference/dst_beta.html" class="external-link">dst_beta</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">50</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>   duration <span class="op">=</span> <span class="fl">3</span> <span class="op">*</span> <span class="fl">24</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dst_gev(100, 3, 0.1):</span> could not find function "dst_gev"</span>
