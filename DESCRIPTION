@@ -26,5 +26,6 @@ Remotes:
 Imports: 
     distionary,
     distplyr,
+    ellipsis,
     gbem
 URL: https://stochagbem.github.io/stochasim/

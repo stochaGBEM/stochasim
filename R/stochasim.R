@@ -1,56 +1,93 @@
-#' @rdname stochasim_rainsnow
-stochasim <- function(hydist, cross_section, nsim = 1000, niter = 1000, rv_rate = 0.1) {
-  hydrographs <- realise(hydist, nsim)
-  width_base <- 3 * sqrt(Q_base)  #estimate the low flow width based on base flow using std hydraulic geometry eq
-
-  results <- matrix(data = NA, nrow = nsim, ncol = 4)
-
-  #initialize the simulation by making calculations for the first year
-  i = 1
-  #analyse the effects of the first snowmelt flood
-  r_rain <- rain_hydrograph(floods_rain[i], Q_base, n, d84, d50, width_0, slope, H)
-  width_r <- width_0 + r_rain[2] #widen the channel
-
-  #account for revegetation and net widening during hydrographs
-  if(r_rain[2] > 0) {
-    reveg <- 0  #no revegetation if bank erosion occurs
-  } else {
-    reveg <- rv_rate * (width_r - width_base)
-  }
-  width_v <- width_r - reveg
-
-  #write the results Q_rain, Vb_rain, E_rain, new_width
-  results[i,] <- c(floods_rain[i], r_rain[3], r_rain[2], width_v)
-
-  # loop through all the floods generated above
-  for (i in seq(2, nsim)) {
-    #use the final width from the previous run to start the next one
-    width_0 <- results[(i-1), 4]
-
-    #analyse the effects of the next snowmelt flood
-    r_rain <- rain_hydrograph(floods_rain[i], Q_base, n, d84, d50, width_0, slope, H)
-    width_r <- width_0 + r_rain[2] #widen the channel
-
-    #account for revegetation and net widening during hydrographs
-    if(r_rain[2] > 0) {
-      reveg <- 0  #no revegetation if bank erosion during fall/storm
-    } else {
-      reveg <- rv_rate * (width_r - width_base)
+#' Stochasim Algorithm
+#'
+#' @param hydist Hydrograph Distribution
+#' @param cross_section A `"cross_section"` object representing a stream's
+#' cross section.
+#' @param rv_rate Rate parameter for revegetation, passed to `revegetate()`.
+#' @param nsim Number of event hydrographs to run; positive integer.
+#' @param niter Number of iterations for `gbem::gbem()` when running
+#' each hydrograph.
+#' @returns A stochasim object, containing all the event hydrographs, and
+#' cross sections.
+#' @examples
+#' library(distionary)
+#' regime <- hydist_snow(distionary::dst_gev(1000, 3, 0.1), baseflow = 50)
+#' cs <- gbem::cross_section(3, grad = 0.01, d50 = 0.1, d84 = 0.5, roughness = 0.01)
+#' ss <- stochasim(regime, cross_section = cs)
+#' ss_flows(ss)
+#' ss_widths(ss)
+#' @export
+stochasim <- function(hydist, cross_section, rv_rate = 0.1, nsim = 1000, niter = 300) {
+  hydrographs <- distionary::realise(hydist, nsim)
+  Q_base <- mean(vapply(hydrographs, \(h) h(0), FUN.VALUE = numeric(1L)))
+  #estimate the low flow width based on base flow using std hydraulic geometry eq
+  width_base <- 3 * sqrt(Q_base)
+  cs <- list(cross_section)
+  for (i in seq_len(nsim)) {
+    cat("|")
+    g <- gbem::gbem(hydrographs[[i]], cross_section = cs[[i]], niter = niter)
+    cs0 <- gbem::erode(g)
+    if (gbem::ch_width(cs0) == gbem::ch_width(cs[[i]])) {
+      cs0 <- revegetate(cs0, width_base, rate = rv_rate)
     }
-    width_v <- width_r - reveg
-
-    #write the results Q_rain, Vb_rain, E_rain, new_width
-    results[i,] <- c(floods_rain[i], r_rain[3], r_rain[2], width_v)
-
+    cs[[i + 1]] <- cs0
   }
+  res <- list(
+    hydrographs = hydrographs,
+    cross_sections = cs,
+    nsim = nsim,
+    niter = niter,
+    rv_rate = rv_rate
+  )
+  new_stochasim(res)
+}
 
-  #once the simulation is complete, transform to a data frame
-  results <- as.data.frame(results)
+#' Constructor Function for Stochasim Objects
+new_stochasim <- function(l, ..., class = character()) {
+  structure(l, ..., class = c(class, "stochasim"))
+}
 
-  #give the columns meaningful names
-  colnames(results) <- c('Q_rain',
-                         'Vb_rain',
-                         'E_rain',
-                         'new_width')
-  return(results)
+#' @exportS3Method base::print
+print.stochasim <- function(x, ...) {
+  ellipsis::check_dots_empty()
+  cat("Stochasim object with ", x$nsim, " runs.")
+}
+
+#' Get peak flows and channel widths from stochasim
+#' @param stochasim Stochasim object.
+#' @export
+#' @rdname ss
+ss_flows <- function(stochasim) {
+  h <- stochasim$hydrographs
+  vapply(h, gbem::peak, FUN.VALUE = numeric(1L))
+}
+
+#' @export
+#' @rdname ss
+ss_widths <- function(stochasim) {
+  cs <- stochasim$cross_sections
+  vapply(cs, gbem::ch_width, FUN.VALUE = numeric(1L))
+}
+
+#' @exportS3Method graphics::plot
+plot.stochasim <- function(stochasim, what = c("widths", "flows"), from = 0) {
+  what <- match.arg(what)
+  if (what == "widths") {
+    ss_plot_widths(stochasim, from = from)
+  }
+  if (what == "flows") {
+    ss_plot_flows(stochasim, from = from)
+  }
+}
+
+ss_plot_flows <- function(stochasim, from) {
+  nsim <- stochasim$nsim
+  ss_flows <- ss_flows(stochasim)
+  plot(from:nsim, ss_flows[from:nsim], xlab = "Year", ylab = "Flow")
+}
+
+ss_plot_widths <- function(stochasim, from) {
+  nsim <- stochasim$nsim
+  w <- ss_widths(stochasim)
+  plot(from:nsim, w[from:nsim + 1], xlab = "Year", ylab = "Width")
 }

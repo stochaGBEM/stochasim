@@ -29,7 +29,7 @@ Make a Rainfall or Snowmelt-Related Event Hydrograph Distribution
 d <- distionary::dst_gev(100, 3, 0.1)
 set.seed(4)
 hs <- hydist_snow(d, 50)
-plot(hs, n = 1000, add = TRUE)
+plot(hs, n = 1000, col = "orange3")
 hr <- hydist_rain(d, 50)
-plot(hr, n = 1000)
+plot(hr, n = 1000, col = "blue3", add = TRUE)
 }

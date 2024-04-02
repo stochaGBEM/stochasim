@@ -16,7 +16,7 @@ stochasim_snow <- function(floods_snow, Q_base, cross_section) {
   n <- cross_section$roughness
   d84 <- cross_section$d84
   d50 <- cross_section$d50
-  width_0 <- cross_section$width
+  width_0 <- ch_width(cross_section)
   slope <- cross_section$grad
   H <- cross_section$rootdepth
   #calculate some constants
