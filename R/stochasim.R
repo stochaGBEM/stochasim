@@ -83,11 +83,13 @@ plot.stochasim <- function(stochasim, what = c("widths", "flows"), from = 0) {
 ss_plot_flows <- function(stochasim, from) {
   nsim <- stochasim$nsim
   ss_flows <- ss_flows(stochasim)
-  plot(from:nsim, ss_flows[from:nsim], xlab = "Year", ylab = "Flow")
+  plot(from:nsim, ss_flows[from:nsim], xlab = "Year", ylab = "Flow", type = "l",
+       col = "#1639FF")
 }
 
 ss_plot_widths <- function(stochasim, from) {
   nsim <- stochasim$nsim
   w <- ss_widths(stochasim)
-  plot(from:nsim, w[from:nsim + 1], xlab = "Year", ylab = "Width")
+  plot(from:nsim, w[from:nsim + 1], xlab = "Year", ylab = "Width", type = "l",
+       col = "#1639FF")
 }
