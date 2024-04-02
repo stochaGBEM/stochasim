@@ -22,21 +22,63 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/stochasim)](https://CRAN.R-project.org/package=stochasim)
 <!-- badges: end -->
 
-The goal of stochasim is to ...
+Stochasim tracks river channel width over time as floods widen the channel and non-flood years narrow the channel through revegetation. It iterates the `gbem::gbem()` algorithm to calculate erosion, and includes a revegetation layer when erosion does not happen.
 
 ## Installation
 
-You can install the development version of stochasim like so:
+As stochasim is not on CRAN yet, you can install the development version of stochasim like so:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+remotes::install_github("stochaGBEM/stochasim")
 ```
+
+If this doesn't work, you may have to install the remotes package with the command `install.packages("remotes")`.
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
 ```{r example}
 library(stochasim)
-## basic example code
+library(distionary)
 ```
+
+Loading stochasim also loads the gbem package, so we can start off by making a channel cross section.
+
+```{r}
+(cs <- cross_section(10, grad = 0.01, d50 = 65, d84 = 100, roughness = 0.01))
+```
+
+Find the flow for which erosion begins (also a gbem feature).
+
+```{r}
+(q <- eroding_flow(cs))
+```
+
+Set up a peak flow distribution that sometimes exceeds this erosive flow. Here's how often an event exceeds this critical flow (as a proportion):
+
+```{r}
+d_peak <- dst_gev(11, 3, 0.1)
+eval_survival(d_peak, at = q)
+```
+
+An experimental feature of stochasim is the incorporation of hydrograph distributions: a probability distribution whose outcome space is made up of event hydrographs. Make a rainfall-related hydrograph distribution whose baseflow is fixed, and peak is random with the above GEV; plot one example draw from this distribution.
+
+```{r}
+h <- hydist_rain(d_peak, baseflow = q / 4)
+set.seed(23)
+plot(h)
+```
+
+Run the stochasim algorithm. Plot the evolution of width from year 500 onwards.
+
+```{r}
+ss <- stochasim(h, cs)
+plot(ss, from = 500)
+```
+
+Plot the peak discharges from year 500 onwards.
+
+```{r}
+plot(ss, from = 500, what = "flows")
+```
+
+
