@@ -78,21 +78,42 @@ plot(h)
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
-Run the stochasim algorithm. Plot the evolution of width from year 500
-onwards.
+Run the stochasim algorithm. Plot the evolution of width.
 
 ``` r
-ss <- stochasim(h, cs)
-#> ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-plot(ss, from = 500)
+ss <- realise(h, n = 200) |> 
+  stochasim(cs)
+plot(ss)
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
-Plot the peak discharges from year 500 onwards.
+For running two event hydrographs per iteration, use `stochasim2()`.
+Here is an example of a snowmelt-related event followed by a
+rainfall-related event, with revegetation only happening if no erosion
+occurs with the rainfall-related event.
 
 ``` r
-plot(ss, from = 500, what = "flows")
+dst_snow <- hydist_snow(dst_norm(13, 2^2), baseflow = q / 4)
+set.seed(43)
+rain <- realise(h, n = 200)
+snow <- realise(dst_snow, n = 200)
+(ss2 <- stochasim2(snow, rain, cross_section = cs, progress = TRUE))
+#> Stochasim object with 200 runs.
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+Plot the evolution of width.
+
+``` r
+plot(ss2)
+```
+
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+
+Plot the peak flows.
+
+``` r
+plot(ss2, what = "flows")
+```
+
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
