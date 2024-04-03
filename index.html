@@ -92,16 +92,28 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">23</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
-<p>Run the stochasim algorithm. Plot the evolution of width from year 500 onwards.</p>
+<p>Run the stochasim algorithm. Plot the evolution of width.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ss</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/stochasim.html">stochasim</a></span><span class="op">(</span><span class="va">h</span>, <span class="va">cs</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ss</span>, from <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ss</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://distionary.netlify.app/reference/realise.html" class="external-link">realise</a></span><span class="op">(</span><span class="va">h</span>, n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="reference/stochasim.html">stochasim</a></span><span class="op">(</span><span class="va">cs</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ss</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
-<p>Plot the peak discharges from year 500 onwards.</p>
+<p>For running two event hydrographs per iteration, use <code><a href="reference/stochasim.html">stochasim2()</a></code>. Here is an example of a snowmelt-related event followed by a rainfall-related event, with revegetation only happening if no erosion occurs with the rainfall-related event.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ss</span>, from <span class="op">=</span> <span class="fl">500</span>, what <span class="op">=</span> <span class="st">"flows"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
+<code class="sourceCode R"><span><span class="va">dst_snow</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/hydist_snowrain.html">hydist_snow</a></span><span class="op">(</span><span class="fu"><a href="https://distionary.netlify.app/reference/dst_norm.html" class="external-link">dst_norm</a></span><span class="op">(</span><span class="fl">13</span>, <span class="fl">2</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>, baseflow <span class="op">=</span> <span class="va">q</span> <span class="op">/</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">43</span><span class="op">)</span></span>
+<span><span class="va">rain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://distionary.netlify.app/reference/realise.html" class="external-link">realise</a></span><span class="op">(</span><span class="va">h</span>, n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
+<span><span class="va">snow</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://distionary.netlify.app/reference/realise.html" class="external-link">realise</a></span><span class="op">(</span><span class="va">dst_snow</span>, n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
+<span><span class="op">(</span><span class="va">ss2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/stochasim.html">stochasim2</a></span><span class="op">(</span><span class="va">snow</span>, <span class="va">rain</span>, cross_section <span class="op">=</span> <span class="va">cs</span>, progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Stochasim object with 200 runs.</span></span></code></pre></div>
+<p>Plot the evolution of width.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ss2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%"></p>
+<p>Plot the peak flows.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ss2</span>, what <span class="op">=</span> <span class="st">"flows"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="100%"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
