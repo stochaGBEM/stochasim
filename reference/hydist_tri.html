@@ -71,18 +71,17 @@ values between 0 and 1.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">h</span> <span class="op">&lt;-</span> <span class="fu">hydist_tri</span><span class="op">(</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://distionary.netlify.app/" class="external-link">distionary</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">h</span> <span class="op">&lt;-</span> <span class="fu">hydist_tri</span><span class="op">(</span></span></span>
 <span class="r-in"><span>   dst_peak <span class="op">=</span> <span class="fu"><a href="https://distionary.netlify.app/reference/dst_gev.html" class="external-link">dst_gev</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">3</span>, <span class="fl">0.1</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>   dst_baseflow <span class="op">=</span> <span class="fu"><a href="https://distionary.netlify.app/reference/dst_norm.html" class="external-link">dst_norm</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">10</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>   dst_when <span class="op">=</span> <span class="fu"><a href="https://distionary.netlify.app/reference/dst_beta.html" class="external-link">dst_beta</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">50</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>   duration <span class="op">=</span> <span class="fl">3</span> <span class="op">*</span> <span class="fl">24</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dst_gev(100, 3, 0.1):</span> could not find function "dst_gev"</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">h</span>, n <span class="op">=</span> <span class="fl">1000</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">150</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'h' not found</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">h</span>, n <span class="op">=</span> <span class="fl">1000</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'h' not found</span>
+<span class="r-plt img"><img src="hydist_tri-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

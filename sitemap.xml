@@ -34,6 +34,9 @@
     <loc>https://stochagbem.github.io/stochasim/reference/plot.hydist.html</loc>
   </url>
   <url>
+    <loc>https://stochagbem.github.io/stochasim/reference/plot.stochasim.html</loc>
+  </url>
+  <url>
     <loc>https://stochagbem.github.io/stochasim/reference/realise.hydist.html</loc>
   </url>
   <url>
@@ -41,6 +44,12 @@
   </url>
   <url>
     <loc>https://stochagbem.github.io/stochasim/reference/ss.html</loc>
+  </url>
+  <url>
+    <loc>https://stochagbem.github.io/stochasim/reference/ss_plot_flows.html</loc>
+  </url>
+  <url>
+    <loc>https://stochagbem.github.io/stochasim/reference/ss_plot_widths.html</loc>
   </url>
   <url>
     <loc>https://stochagbem.github.io/stochasim/reference/stochasim.html</loc>
