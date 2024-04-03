@@ -11,6 +11,14 @@
 #' width and `width0`.
 #' @export
 revegetate <- function(cross_section, width0, rate = 0.1) {
+  if (!is.na(width0) && width0 < 0) {
+    stop("Stable cross section width cannot be negative; received ",
+         width0, ".")
+  }
+  if (!is.na(rate) && (rate < 0 || rate > 1)) {
+    stop("Revegetation rate must be between 0 and 1; received ",
+         rate, ".")
+  }
   w <- gbem::ch_width(cross_section)
   reveg <- rate * (w - width0)
   gbem::ch_width(cross_section) <- w - reveg
