@@ -1,9 +1,12 @@
 #' Stochasim Algorithm
 #'
-#' @param hydist Hydrograph Distribution
+#' @param x,y Hydrographs, as a list or bare. Recycled to the same length.
 #' @param cross_section A `"cross_section"` object representing a stream's
 #' cross section.
 #' @param rv_rate Rate parameter for revegetation, passed to `revegetate()`.
+#' For `stochasim2()`, possibly a vector of length two corresponding to
+#' different revegetation rates for hydrographs `x` and `y`. Note: a rate of
+#' 0 means no revegetation happens.
 #' @param nsim Number of event hydrographs to run; positive integer.
 #' @param niter Number of iterations for `gbem::gbem()` when running
 #' each hydrograph.
@@ -16,26 +19,30 @@
 #' ss <- stochasim(regime, cross_section = cs)
 #' ss_flows(ss)
 #' ss_widths(ss)
+#' @rdname stochasim
 #' @export
-stochasim <- function(hydist, cross_section, rv_rate = 0.1, nsim = 1000, niter = 300) {
-  hydrographs <- distionary::realise(hydist, nsim)
-  Q_base <- mean(vapply(hydrographs, \(h) h(0), FUN.VALUE = numeric(1L)))
+stochasim <- function(x, cross_section, rv_rate = 0.1, niter = 300) {
+  if (is_hydrograph(x)) x <- list(x)
+  if (length(rv_rate) != 1) {
+    stop("Revegetation rate must be a length 1 vector. Received length ",
+         length(rv_rate), ".")
+  }
+  Q_base <- mean(vapply(x, \(h) h(0), FUN.VALUE = numeric(1L)))
   #estimate the low flow width based on base flow using std hydraulic geometry eq
   width_base <- 3 * sqrt(Q_base)
   cs <- list(cross_section)
-  for (i in seq_len(nsim)) {
-    cat("|")
-    g <- gbem::gbem(hydrographs[[i]], cross_section = cs[[i]], niter = niter)
-    cs0 <- gbem::erode(g)
-    if (gbem::ch_width(cs0) == gbem::ch_width(cs[[i]])) {
+  for (i in seq_along(x)) {
+    g <- gbem(x[[i]], cross_section = cs[[i]], niter = niter)
+    cs0 <- erode(g)
+    if (ch_width(cs0) == ch_width(cs[[i]])) {
       cs0 <- revegetate(cs0, width_base, rate = rv_rate)
     }
     cs[[i + 1]] <- cs0
   }
   res <- list(
-    hydrographs = hydrographs,
+    x = x,
     cross_sections = cs,
-    nsim = nsim,
+    nsim = length(x),
     niter = niter,
     rv_rate = rv_rate
   )
