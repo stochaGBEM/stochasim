@@ -30,3 +30,6 @@ Imports:
 URL: https://stochagbem.github.io/stochasim/
 Depends: 
     gbem
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
