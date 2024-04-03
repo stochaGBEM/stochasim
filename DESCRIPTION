@@ -1,20 +1,21 @@
 Package: stochasim
-Title: What the Package Does (One Line, Title Case)
+Title: Channel revegetation and widening
 Version: 0.0.0.9000
 Authors@R: 
     c(
     person("Sarah", "Davidson", email = "sdavidson@bgcengineering.ca",
            role = "aut"),
     person("Brett", "Eaton", email = "beaton@bgcengineering.ca",
-           role = c("aut", "cre")),
+           role = c("aut")),
     person("Lucy", "MacKenzie", email = "lmackenzie@bgcengineering.ca",
            role = "aut"),
     person("Vincenzo", "Coia", email = "vcoia@bgcengineering.ca", 
-           role = c("aut", "ctb")),
+           role = c("aut", "cre")),
     person("Jane", "Wang", email = "jwang@bgcengineering.ca",
            role = "ctb")
     )
-Description: What the package does (one paragraph).
+Description: Implements an algorithm that sends multiple event hydrographs 
+    through a river channel, with either bank erosion or revegetation occurring.
 License: CC BY-NC 4.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

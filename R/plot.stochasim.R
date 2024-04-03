@@ -20,6 +20,7 @@ plot.stochasim <- function(x, ..., what = c("widths", "flows"), from = 0) {
 #' Plot flows from stochasim object
 #' @param stochasim Stochasim object, as a result of running `stochasim()` or
 #' `stochasim2()`.
+#' @importFrom graphics par
 #' @inheritParams plot.stochasim
 ss_plot_flows <- function(stochasim, from, ...) {
   nsim <- stochasim$nsim

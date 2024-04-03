@@ -23,6 +23,7 @@ Hydrograph distribution returning triangular hydrographs.
 Triangular Hydrograph Distribution
 }
 \examples{
+library(distionary)
 h <- hydist_tri(
    dst_peak = dst_gev(100, 3, 0.1),
    dst_baseflow = dst_norm(50, 10^2),

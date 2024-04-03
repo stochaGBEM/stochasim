@@ -8,6 +8,7 @@
 #' @param duration How long is the event? Single positive numeric.
 #' @return Hydrograph distribution returning triangular hydrographs.
 #' @examples
+#' library(distionary)
 #' h <- hydist_tri(
 #'    dst_peak = dst_gev(100, 3, 0.1),
 #'    dst_baseflow = dst_norm(50, 10^2),
@@ -24,10 +25,10 @@ hydist_tri <- function(dst_peak, dst_baseflow, dst_when, duration = 1) {
   if (is.numeric(dst_when)) dst_when <- distionary::dst_degenerate(dst_when)
   r <- function(n) {
     if (n == 0) return(list())
-    p <- realise(dst_peak, n)
+    p <- distionary::realise(dst_peak, n)
     db <- lapply(p, function(p_) distplyr::slice_right(dst_baseflow, p_))
-    b <- vapply(db, realise, FUN.VALUE = numeric(1L))
-    t <- realise(dst_when, n)
+    b <- vapply(db, distionary::realise, FUN.VALUE = numeric(1L))
+    t <- distionary::realise(dst_when, n)
     if (n == 1) return(gbem::hydrograph(b ~ 0, p ~ t, b ~ 1, unit = duration))
     res <- list()
     for (i in 1:n) {

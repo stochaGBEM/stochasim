@@ -56,6 +56,7 @@
 #' plot(ss2, what = "flows")
 #' ss_widths(ss2)
 #' ss_flows(ss2)
+#' @import gbem
 #' @rdname stochasim
 #' @export
 stochasim <- function(x, cross_section, rv_rate = 0.1, niter = 300, progress = FALSE) {
@@ -90,6 +91,9 @@ stochasim <- function(x, cross_section, rv_rate = 0.1, niter = 300, progress = F
 }
 
 #' Constructor Function for Stochasim Objects
+#' @param l List to convert to stochasim object.
+#' @param ... Attributes to add to the object.
+#' @param class If making a subclass, specify its name here.
 new_stochasim <- function(l, ..., class = character()) {
   structure(l, ..., class = c(class, "stochasim"))
 }

@@ -26,6 +26,7 @@ events, with a constant baseflow and a stochastic peak discharge.
 Make a Rainfall or Snowmelt-Related Event Hydrograph Distribution
 }
 \examples{
+library(distionary)
 d <- distionary::dst_gev(100, 3, 0.1)
 set.seed(4)
 hs <- hydist_snow(d, 50)

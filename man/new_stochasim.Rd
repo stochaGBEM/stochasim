@@ -6,6 +6,13 @@
 \usage{
 new_stochasim(l, ..., class = character())
 }
+\arguments{
+\item{l}{List to convert to stochasim object.}
+
+\item{...}{Attributes to add to the object.}
+
+\item{class}{If making a subclass, specify its name here.}
+}
 \description{
 Constructor Function for Stochasim Objects
 }

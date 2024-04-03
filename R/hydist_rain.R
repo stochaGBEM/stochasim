@@ -8,6 +8,7 @@
 #' @returns A hydrograph distribution for rainfall-related and snowmelt-related
 #' events, with a constant baseflow and a stochastic peak discharge.
 #' @examples
+#' library(distionary)
 #' d <- distionary::dst_gev(100, 3, 0.1)
 #' set.seed(4)
 #' hs <- hydist_snow(d, 50)
