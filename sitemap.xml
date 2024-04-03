@@ -25,9 +25,6 @@
     <loc>https://stochagbem.github.io/stochasim/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/make_floods.html</loc>
-  </url>
-  <url>
     <loc>https://stochagbem.github.io/stochasim/reference/new_hydist.html</loc>
   </url>
   <url>
@@ -47,11 +44,5 @@
   </url>
   <url>
     <loc>https://stochagbem.github.io/stochasim/reference/stochasim.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/stochasim_dual.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/stochasim_rainsnow.html</loc>
   </url>
 </urlset>
