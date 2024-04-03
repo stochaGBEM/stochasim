@@ -5,9 +5,16 @@
 \alias{stochasim2}
 \title{Stochasim Algorithm}
 \usage{
-stochasim(x, cross_section, rv_rate = 0.1, niter = 300)
+stochasim(x, cross_section, rv_rate = 0.1, niter = 300, progress = FALSE)
 
-stochasim2(x, y, cross_section, rv_rate = c(0, 0.1), niter = 300)
+stochasim2(
+  x,
+  y,
+  cross_section,
+  rv_rate = c(0, 0.1),
+  niter = 300,
+  progress = FALSE
+)
 }
 \arguments{
 \item{x, y}{Hydrographs, as a list or bare. Recycled to the same length.}
@@ -15,48 +22,64 @@ stochasim2(x, y, cross_section, rv_rate = c(0, 0.1), niter = 300)
 \item{cross_section}{A \code{"cross_section"} object representing a stream's
 cross section.}
 
-\item{rv_rate}{Rate parameter for revegetation, passed to \code{revegetate()}.}
+\item{rv_rate}{Rate parameter for revegetation, passed to \code{revegetate()}.
+For \code{stochasim2()}, possibly a vector of length two corresponding to
+different revegetation rates for hydrographs \code{x} and \code{y}. Note: a rate of
+0 means no revegetation happens.}
 
 \item{niter}{Number of iterations for \code{gbem::gbem()} when running
 each hydrograph.}
 
-\item{hydist}{Hydrograph Distribution}
-
-\item{nsim}{Number of event hydrographs to run; positive integer.}
+\item{progress}{Display a progress bar? Logical; defaults to \code{FALSE}.}
 }
 \value{
 A stochasim object, containing all the event hydrographs, and
 cross sections.
-
-A stochasim object, containing all the event hydrographs, and
-cross sections.
 }
 \description{
-Stochasim Algorithm
+Send multiple annual event hydrograph(s) through a channel, with either
+bank erosion or revegetation occurring.
+Erosion is determined by the \code{gbem::gbem()} algorithm, and revegetation
+occurs at a specified rate if no erosion occurs, using \code{revegetate()}.
+}
+\details{
+For \code{stochasim2()}, \code{x} and \code{y} are paired and looped through, with
+the \code{x} hydrograph occurring before \code{y} in each iteration.
 
-Stochasim Algorithm
+The default interpretation of \code{x} and \code{y} are snowmelt-related
+and rainfall-related event hydrographs (respectively), with each iteration
+corresponding to a year. This is why the default revegetation rate is
+\code{c(0, 0.1)}, so that revegetation only occurs in the fall if no
+rainfall-related erosion occurs.
 }
 \examples{
-library(distionary)
-regime <- hydist_snow(distionary::dst_gev(1000, 3, 0.1), baseflow = 50)
-cs <- gbem::cross_section(3, grad = 0.01, d50 = 0.1, d84 = 0.5, roughness = 0.01)
-ss <- stochasim(regime, cross_section = cs)
-ss_flows(ss)
-ss_widths(ss)
 # Start with a cross section
-cs <- cross_section(3, grad = 0.01, d50 = 0.1, d84 = 0.5, roughness = 0.01)
+cs <- cross_section(40, grad = 0.01, d50 = 65, d84 = 100, roughness = 0.01)
 
-# Make 1000 rain hydrographs and run stochasim
+# Make 500 rain hydrographs and run stochasim
 library(distionary)
-dst_rain <- hydist_rain(dst_gev(1000, 3, 0.1), baseflow = 50)
-rain <- realise(dst_rain, n = 1000)
-ss <- stochasim(hydrographs, cross_section = cs)
-plot(ss)
-plot(ss, "flows")
+dst_rain <- hydist_rain(dst_gev(11, 3, 0.1), baseflow = 2)
+set.seed(42)
+rain <- realise(dst_rain, n = 500)
+(ss <- stochasim(rain, cross_section = cs, progress = TRUE))
 
-# Make 1000 snow hydrographs and run stochasim on both hydrographs.
-dst_snow <- hydist_snow(dst_norm(1000, 10^2), baseflow = 50)
-snow <- realise(dst_snow, n = 1000)
-ss2 <- stochasim2(snow, rain, cross_section = cs)
+# View evolution of channel width; view peak flows.
+plot(ss)
+plot(ss, what = "flows")
+
+# Or, make your own plot by extracting the data
+ss_widths(ss)
+ss_flows(ss)
+
+# Make 500 snow hydrographs and run stochasim on both hydrographs.
+dst_snow <- hydist_snow(dst_norm(13, 2^2), baseflow = 2)
+set.seed(43)
+snow <- realise(dst_snow, n = 500)
+(ss2 <- stochasim2(snow, rain, cross_section = cs, progress = TRUE))
+
+# Plot again.
 plot(ss2)
+plot(ss2, what = "flows")
+ss_widths(ss2)
+ss_flows(ss2)
 }

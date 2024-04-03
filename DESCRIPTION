@@ -24,9 +24,11 @@ Remotes:
     probaverse/distplyr,
     stochaGBEM/gbem
 Imports: 
+    cli,
     distionary,
     distplyr,
-    ellipsis
+    ellipsis,
+    vctrs
 URL: https://stochagbem.github.io/stochasim/
 Depends: 
     gbem

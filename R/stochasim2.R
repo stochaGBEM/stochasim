@@ -1,34 +1,7 @@
-#' Stochasim Algorithm
-#'
-#' @param hydist Hydrograph Distribution
-#' @param cross_section A `"cross_section"` object representing a stream's
-#' cross section.
-#' @param rv_rate Rate parameter for revegetation, passed to `revegetate()`.
-#' @param nsim Number of event hydrographs to run; positive integer.
-#' @param niter Number of iterations for `gbem::gbem()` when running
-#' each hydrograph.
-#' @returns A stochasim object, containing all the event hydrographs, and
-#' cross sections.
-#' @examples
-#' # Start with a cross section
-#' cs <- cross_section(3, grad = 0.01, d50 = 0.1, d84 = 0.5, roughness = 0.01)
-#'
-#' # Make 1000 rain hydrographs and run stochasim
-#' library(distionary)
-#' dst_rain <- hydist_rain(dst_gev(1000, 3, 0.1), baseflow = 50)
-#' rain <- realise(dst_rain, n = 1000)
-#' ss <- stochasim(hydrographs, cross_section = cs)
-#' plot(ss)
-#' plot(ss, "flows")
-#'
-#' # Make 1000 snow hydrographs and run stochasim on both hydrographs.
-#' dst_snow <- hydist_snow(dst_norm(1000, 10^2), baseflow = 50)
-#' snow <- realise(dst_snow, n = 1000)
-#' ss2 <- stochasim2(snow, rain, cross_section = cs)
-#' plot(ss2)
 #' @rdname stochasim
 #' @export
-stochasim2 <- function(x, y, cross_section, rv_rate = c(0, 0.1), niter = 300) {
+stochasim2 <- function(x, y, cross_section, rv_rate = c(0, 0.1), niter = 300,
+                       progress = FALSE) {
   if (is_hydrograph(x)) x <- list(x)
   if (is_hydrograph(y)) y <- list(y)
   if (length(rv_rate) == 1) rv_rate <- c(rv_rate, rv_rate)
@@ -45,6 +18,7 @@ stochasim2 <- function(x, y, cross_section, rv_rate = c(0, 0.1), niter = 300) {
   #estimate the low flow width based on base flow using std hydraulic geometry eq
   width_base <- 3 * sqrt(Q_base)
   cs <- list(cross_section)
+  if (progress) cli::cli_progress_bar("Iterating", total = length(x))
   for (i in seq_along(x)) {
     gx <- gbem(x[[i]], cross_section = cs[[i]], niter = niter)
     csx <- erode(gx)
@@ -57,7 +31,9 @@ stochasim2 <- function(x, y, cross_section, rv_rate = c(0, 0.1), niter = 300) {
       csy <- revegetate(csy, width_base, rate = rv_rate[2])
     }
     cs[[i + 1]] <- csy
+    if (progress) cli::cli_progress_update()
   }
+  if (progress) cli::cli_progress_done()
   res <- list(
     x = x,
     y = y,
