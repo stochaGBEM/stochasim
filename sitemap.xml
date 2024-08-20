@@ -1,57 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/404.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/index.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/hydist.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/hydist_snowrain.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/hydist_tri.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/new_hydist.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/new_stochasim.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/plot.hydist.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/plot.stochasim.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/realise.hydist.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/revegetate.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/ss.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/ss_plot_flows.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/ss_plot_widths.html</loc>
-  </url>
-  <url>
-    <loc>https://stochagbem.github.io/stochasim/reference/stochasim.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://stochagbem.github.io/stochasim/404.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/CONTRIBUTING.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/LICENSE.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/authors.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/index.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/news/index.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/reference/hydist.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/reference/hydist_snowrain.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/reference/hydist_tri.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/reference/index.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/reference/new_hydist.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/reference/new_stochasim.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/reference/plot.hydist.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/reference/plot.stochasim.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/reference/realise.hydist.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/reference/revegetate.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/reference/ss.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/reference/ss_plot_flows.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/reference/ss_plot_widths.html</loc></url>
+<url><loc>https://stochagbem.github.io/stochasim/reference/stochasim.html</loc></url>
 </urlset>
+
