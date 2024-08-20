@@ -36,6 +36,9 @@ the command `install.packages("remotes")`.
 ``` r
 library(stochasim)
 #> Loading required package: gbem
+```
+
+``` r
 library(distionary)
 ```
 
@@ -117,3 +120,10 @@ plot(ss2, what = "flows")
 ```
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+
+## Code of Conduct
+
+Please note that the stochasim project is released with a [Contributor
+Code of
+Conduct](https://stochagbem.github.io/stochasim/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.

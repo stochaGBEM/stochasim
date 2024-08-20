@@ -11,3 +11,5 @@ hydist_snow <- function(dst_peak, baseflow, duration = 9 * 24) {
   }
   hydist(realise)
 }
+
+
