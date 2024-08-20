@@ -1,6 +1,6 @@
 Package: stochasim
 Title: Channel revegetation and widening
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     c(
     person("Sarah", "Davidson", email = "sdavidson@bgcengineering.ca",
